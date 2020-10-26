@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health App</title>
+
+<link rel="stylesheet" href="css/index.css">
+ <!-- MDB icon -->
+ <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+ <!-- Google Fonts Roboto -->
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+ <!-- Bootstrap core CSS -->
+ <link rel="stylesheet" href="css/bootstrap.css">
+ <!-- Material Design Bootstrap -->
+ <!-- <link rel="stylesheet" href="css/mdb.min.css"> -->
+ <!-- Your custom styles (optional) -->
+ <link rel="stylesheet" href="css/style.css">
+
+<script language="javascript" src="js/config.js"></script> 
+ <!-- jQuery -->
+ <script type="text/javascript" src="js/jquery.min.js"></script>
+ <!-- Bootstrap tooltips -->
+ <script type="text/javascript" src="js/popper.min.js"></script>
+ <!-- Bootstrap core JavaScript -->
+ <script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <!-- MDB core JavaScript -->
+ <script type="text/javascript" src="js/mdb.min.js"></script>
+ <!-- Your custom scripts (optional) -->
+ <script type="text/javascript"></script>
+</head>
+<header>
+  <nav class="navbar fixed-top navbar navbar-dark bg-dark">
+    <button type="button" class="btn btn-dark" onclick="goback()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+    <h2 class="form-signin-heading title">Add New Diet</h2>
+    <button class="navbar-menu btn btn-dark" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="home.html">Home </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="add_diet.html">Daily Diet<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="userblog.html">User blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="myaccount.html">My account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick=" logout()" href="login.html">Sign out</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="exit()">Exit</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<body>
+
+  <div class="mx-auto">
+    <div class="container">
+     
+      <form class="form-signin frmtop" id="frmcalculate">
+        <div id="alertArea" class="alert" style="display:none;"> </div>
+       
+        <input class="form-control" type="hidden" name="username" id="username" placeholder="qty" autocomplete="off" required >
+          <label class="lable-form">Food</label>
+          <select class="form-control" name="food" id="food">
+
+          </select>
+      
+        
+        <label class="lable-form">unit</label>
+        <input class="form-control" type="text" name="unit" id="unit" placeholder="unit" value="each" autocomplete="off" readonly required >
+
+        <label class="lable-form">qty</label>
+        <input class="form-control" type="text" name="qty" id="qty" placeholder="qty" autocomplete="off" required >
+          
+        <br>
+        <button type="sumbit" id="submit" class="btn btn-primary btn-block mt-10 " data-toggle="modal" data-target="#exampleModal">Calculate</button>
+        <button type="button" id="add-list" class="btn btn-dark btn-block mt-10 " onclick="add_list()">Add to list</button>
+      </form>
+      <div id="alertArea" class="alert" style="display:none;"> </div>
+    </div> <!-- /container -->
+  </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Diet Message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="modalvalue" class="paramodal" ></p>
+          </div>
+          <form id="dietmessform">
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn sm" >Add to list</button>
+            <button type="button" class="btn btn-dark btn sm" data-dismiss="modal">Close</button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+ $(document).ready(function() {
+document.getElementById("username").value= localStorage.getItem('app_uname');
+  $.ajax({
+        type: "POST",
+        url:"http://"+host+"/19s07001/get_food.php",
+        crossDomain: true,
+        cache: false,
+        dataType: 'json',
+        success: function(response){
+        console.log(response);
+        var len = response.length;
+        console.log(len);
+          $("#food").empty();
+          for( var i = 0; i<len; i++){
+              var id = response[i]['id'];
+              var name = response[i]['name'];  
+              $("#food").append("<option value='"+id+"'>"+name+"</option>");
+          }
+        } 
+});       
+
+      $('#frmcalculate').submit(function(e) {
+          e.preventDefault();
+          var form = $('#frmcalculate');
+                    // AJAX request
+                    $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/calculate.php",
+                            data: form.serialize(),
+                            crossDomain: true,
+                            cache: false,
+                            dataType: 'json',
+                            beforeSend: function(){
+                                 $("#submit").val('Connecting...');
+                                },
+                            success: function(response){
+                                    console.log(response);
+                                    document.getElementById("modalvalue").innerHTML ="Carbohydrate value - "+ response+ "g";
+                                   
+                                  } 
+                    });       
+  }); 
+
+  $('#dietmessform').submit(function(e) {
+    e.preventDefault();
+    add_list();
+    //hideModal();
+  })
+
+  $('#food').change(function(e) {
+    var food = $('#food').val();
+                    $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/get_unit.php",
+                            data: {food:food},
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                                    console.log(response);
+                                    document.getElementById('unit').value =response;
+
+                             } 
+                    });       
+  }); 
+                 
+}) 
+
+function add_list(){
+  
+  var form = $('#frmcalculate');
+  var qty= document.getElementById('qty').value;
+  if (qty){
+                    
+                    $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/save_list.php",
+                            data: form.serialize(),
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                                    console.log(response); 
+                                    if (response=="error")  {
+                                      $('#alertArea').show();
+                                      $('#alertArea').addClass("alert-warning");
+                                      $('#alertArea').html("Cannot save!");
+                                    
+                                    }else if (response=="success"){
+                                      $('#alertArea').show();
+                                      $('#alertArea').addClass("alert-success");
+                                      $('#alertArea').html("Saved Successfully.");
+                                     
+                                    }
+                                    document.getElementById("frmcalculate").reset();
+                                    $("#exampleModal").removeClass("in");
+                                    $(".modal-backdrop").remove();
+                                    $("#exampleModal").hide();
+                             } 
+                           
+                             
+                    }); 
+  }else {
+    $('#alertArea').show();
+    $('#alertArea').addClass("alert-warning");
+    $('#alertArea').html("Qty empty..!");
+  }
+  }
+ 
+function exit(){
+  navigator.app.exitApp();
+}
+function goback(){
+  window.location = "home.html";
+}
+function logout(){
+  window.localStorage.removeItem('app_uname');
+}
+</script>
+
+</body>
+</html>

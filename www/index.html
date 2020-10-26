@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health App</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+ <!-- Google Fonts Roboto -->
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+ <!-- Bootstrap core CSS -->
+ <link rel="stylesheet" href="css/bootstrap.min.css">
+ <!-- Material Design Bootstrap -->
+ <link rel="stylesheet" href="css/mdb.min.css">
+ <!-- Your custom styles (optional) -->
+ <link rel="stylesheet" href="css/style.css">
+ 
+<script language="javascript" src="js/config.js"></script> 
+ <!-- jQuery -->
+ <script type="text/javascript" src="js/jquery.min.js"></script>
+ <!-- Bootstrap tooltips -->
+ <script type="text/javascript" src="js/popper.min.js"></script>
+ <!-- Bootstrap core JavaScript -->
+ <script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <!-- MDB core JavaScript -->
+ <script type="text/javascript" src="js/mdb.min.js"></script>
+ <!-- Your custom scripts (optional) -->
+ <script type="text/javascript"></script>
+</head>
+
+<body >
+ 
+    <div class="container text-center center-block  flashcenter">
+      <h2 class="ml9">
+      <img src="img/flash.jpg" class='img-fluid class="letters"' id="image">
+    </h2>
+     <div class="col-lg-4">
+     <h2 class="ml9">
+          <span class="letters">Carbo Helth</span>
+      </h2>
+    </div> 
+  </div> 
+  <div class="footer"></footer>
+  <div class="footer-copyright text-center py-3">© 2020 Created by Dinuth Shamen </div>
+  </div>
+  
+
+  
+
+<script>
+// Wrap every letter in a span
+var textWrapper = document.querySelector('.ml9 .letters');
+textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+anime.timeline({loop: true})
+  .add({
+    targets: '.ml9 .letter',
+    scale: [0, 1],
+    duration: 1500,
+    elasticity: 600,
+    delay: (el, i) => 45 * (i+1)
+  }).add({
+    targets: '.ml9',
+    opacity: 0,
+    duration: 1000,
+    easing: "easeOutExpo",
+    delay: 500,
+   
+  });
+  $(document).ready(function () {
+  var username =localStorage.getItem('app_uname');
+  
+    window.setTimeout(function () {
+      if (username){ 
+        location.href = "home.html"; 
+        }else{
+          location.href = "apphome.html";
+      }   
+    }, 3000);
+});v
+</script>
+</body>
+
+</html>

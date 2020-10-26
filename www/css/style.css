@@ -1,0 +1,36 @@
+.ml9 {
+    font-size: 50px;
+    color:#095694
+  }
+  
+  .ml9 .letter {
+    transform-origin: 50% 100%;
+    display: inline-block;
+    line-height: 1em;
+  }
+  .vertical-center-row {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: #095694;
+  text-align: center;
+}
+.flashcenter {
+  left: 0;
+  top:15%;
+  bottom:50%;
+  width: 100%;
+  text-align: center;
+}
+.pos-fixed{
+  position: fixed;
+  width: 100%;
+}
+  

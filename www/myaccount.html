@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health App</title>
+
+<link rel="stylesheet" href="css/index.css">
+ <!-- MDB icon -->
+ <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+ <!-- Google Fonts Roboto -->
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+ <!-- Bootstrap core CSS -->
+ <link rel="stylesheet" href="css/bootstrap.css">
+ <!-- Material Design Bootstrap -->
+ <!-- <link rel="stylesheet" href="css/mdb.min.css"> -->
+ <!-- Your custom styles (optional) -->
+ <link rel="stylesheet" href="css/style.css">
+
+<script language="javascript" src="js/config.js"></script> 
+ <!-- jQuery -->
+ <script type="text/javascript" src="js/jquery.min.js"></script>
+ <!-- Bootstrap tooltips -->
+ <script type="text/javascript" src="js/popper.min.js"></script>
+ <!-- Bootstrap core JavaScript -->
+ <script type="text/javascript" src="js/bootstrap.min.js"></script>
+ <!-- MDB core JavaScript -->
+ <script type="text/javascript" src="js/mdb.min.js"></script>
+ <!-- Your custom scripts (optional) -->
+ <script type="text/javascript"></script>
+
+</head>
+<header>
+  <nav class="navbar fixed-top navbar navbar-dark bg-dark">
+    <button type="button" class="btn btn-dark" onclick="goback()"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+    <h2 class="form-signin-heading title">My Account</h2>
+    <button class="navbar-menu btn btn-dark" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="home.html">Home </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="add_diet.html">Daily Diet<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="userblog.html">User blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="myaccount.html">My account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick=" logout()" href="login.html">Sign out</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" onclick="exit()">Exit</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<body>
+  <div class="mx-auto">
+    <div class="container">
+      <div class="flashcenter">
+        <div calss="row">
+        <img id="profilepic" src="img/profile.jpg" class="round">
+        <div class="camicon">
+          <button class="btn btn-light btn sm "  data-toggle="modal" data-target="#modalpro_uploard"><i class="fas fa-camera"></i></button>
+        </div>
+      </div>
+    </div>
+    
+<h4 class="text-center" id="mainusername">Dinuth Shamen</h4>
+<h6 class="text-center"id="mainemail">Your Email: dinuthshamen@gmail.com</h6>
+<hr>
+      </div>
+  </div>
+   
+      <div class="mx-auto">
+        <div class="container">
+        <br>
+        <div id="alertArea" class="alert" style="display:none;"> </div>
+        <div style="display: block;" id="cart">
+          <h4> Write your Article</h4>
+          <button type="button" id="cart" class="btn btn-primary btn-block mt-10 "  onclick="cart()"><i class="fa fa-edit" aria-hidden="true"></i> Create Article</button>
+        </div>
+        <form id="frmart" name="frmart" style="display: none;">
+          <h4> Write your Article</h4>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Article Name</label>
+          <input class="form-control" type="text" name="name" id="name" placeholder="Article Name" autocomplete="off" required >
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Describe</label>
+          <input class="form-control" type="hidden" name="username" id="username" autocomplete="off" required >
+          <textarea class="form-control" id="describ" name="describ" rows="3" required></textarea>  
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" accept="image/*" name="image" id="files" required>
+          <label class="custom-file-label" for="customFile">Choose Image</label>
+        </div>
+        <br>
+        <div id="preview"><img src=""/></div>
+        <button type="submit" class="btn btn-primary btn-block mt-10 "><i class="fa fa-edit" aria-hidden="true"></i> Submit Article</button>
+        <button type="submit" class="btn btn-danger btn-block mt-10 " onclick="discard()"><i class="fa fa-trash" aria-hidden="true"></i> Discard</button>
+      </form>
+      <hr>
+      <div id="inner"></div>
+      <br>
+    </div> <!-- /container -->
+
+  </div>
+  
+  <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div id="modalinner"></div>
+      </div>
+      <div class="modal-footer">
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="articlemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="article_header">Article</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        <div id="article_body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="article_header">Delete Article</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <from id="frmdelete">
+      <div class="modal-body">
+      <p>Are you sure want to delete this Article?</p>
+        <input type="hidden" id="deleteinput" name="articleId">
+        <div id="article_body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="deleteconfirm()" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </from>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalpro_uploard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="article_header">Profile Picture</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="frmprouploard" name="frmprouploard">
+      <div class="modal-body">
+      <p>Uploard you profile image (accept image format "jpg" only)</p>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" accept="image/*" name="image" id="files" required>
+        <label class="custom-file-label" for="customFile">Choose Image</label>
+      </div>  
+      <input type="hidden" id="prousername" name="username">
+        <div id="article_body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Uploard</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </from>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $(function(){
+    $("#includedContent").load("navbar.html"); 
+  });
+    var username =localStorage.getItem('app_uname');
+    document.getElementById("username").value= username;
+    document.getElementById("prousername").value= username;
+    $('#profilepic').attr('src','http://'+host+'/19s07001/img/profile/'+username+'.jpg');
+    var limit ="15";
+    $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/get_artical_user.php",
+                            data: {username:username,limit:limit},
+                            dataType: 'JSON',
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                             console.log(response);
+                                    var len = response.length;
+
+                                    for(var i=0; i<len; i++){
+                                      var name = response[i].name;
+                                      var image = response[i].image;
+                                      var datetime = response[i].datetime;
+                                      var describ = response[i].describ;
+                                      var full_name = response[i].full_name;
+                                      var articleId=response[i].articleId;
+                                    $( "#inner" ).append( 
+                                      "<br>"+
+                                      "<div class='card' >"+
+                                      "<img src='http://"+host+"/19s07001/"+image+"' class='card-img-top' alt=''>"+
+                                        "<div class='card-body'>"+
+                                          '<h5 class="card-title">'+name+'</h5>'+
+                                          '<p class="max-lines card-text">' + describ +'...</p>'+
+                                          '<p class=" artauthor"> Author - '+full_name + ' / Date & Time -'+ datetime +'</p>'+
+                                          '<div class="row">'+
+                                          
+                                            '<button onclick="commodal('+articleId+')"  class="btn btn-light" data-toggle="modal" data-target="#exampleModal"> <i class="far fa-comment"></i>  Comment</button>'+
+                                            '<button onclick="article('+articleId+')" class=" btn btn-light" data-toggle="modal" data-target="#articlemodal" >Read More </button> '+
+                                            '<button onclick="deleteart('+articleId+')" class=" btn btn-light" data-toggle="modal" data-target="#modal_delete" ><i class="fa fa-trash"></i> Delete </button> '+
+                                          '</div>'+
+                                          '</div>'+
+
+                                        '<div class="card-footer">'+
+                                        '  <div class="row">'+
+                                              '<div class="col-10">'+
+                                               ' <input class="form-control" style="border-radius: 20px" type="text" name="comment'+articleId+'" id="comment'+articleId+'" placeholder="Comment" autocomplete="off" required >'+
+                                               '</div>'+
+                                               
+                                               '<button type="button" onclick="subcomment('+articleId+')"" class="btn btn-light"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>'+
+                                               '</div>'+
+                                               ' <div class="row">'+
+                                                '<div class="col-12" id="lblstate'+articleId+'" style="display:none;">'+
+                                                '<p class="d-flex justify-content-end artauthor  id="lblstat'+articleId+'"">Posting</p>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'+
+                                      '</div>'
+                                     
+                                      );
+                                     
+                                    }
+                             } 
+                    });  
+
+                    $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/get_user.php",
+                            data: {username:username},
+                            dataType: 'JSON',
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                             console.log(response);
+                                    var len = response.length;
+
+                                    for(var i=0; i<len; i++){
+                                      var fusername = response[i].full_name;
+                                      var email= response[i].email;
+                                      $('#mainusername').html(fusername);
+                                      $('#mainemail').html("Your Email : "+email);
+                                      $( "#profilepic" ).html('<img src="http://'+host+'/19s07001/img/profile/'+username+'.jpg" class="round">');
+                                    }
+                             } 
+                    });  
+
+        $('#frmart').on('submit',(function(e) {
+          e.preventDefault();
+            var form = $('#frmart');
+            // AJAX request
+            $.ajax({
+                  url: "http://"+host+"/19s07001/submit_article.php",
+                  type: 'post',
+                  data:  new FormData(this),
+                  // dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function(data)
+                        
+                    {
+                      console.log(data);
+                      if(data=='invalid')
+                      {
+                      // invalid file format.
+                     alert("invalide image..!")
+                      }
+                      else
+                      {
+                        $('#alertArea').show();
+                        $('#alertArea').addClass("alert-success");
+                        $('#alertArea').html("Please Wait..! Submitting Your Post.");
+                     
+                      window.setTimeout(function () {
+                        location.href = "userblog.html"; 
+                      }, 5000);
+                      }
+                        }
+            }); //ajax
+          }));
+
+          $('#frmprouploard').on('submit',(function(e) {
+          e.preventDefault();
+            var form = $('#frmprouploard');
+            // AJAX request
+            $.ajax({
+                  url: "http://"+host+"/19s07001/prouploard.php",
+                  type: 'post',
+                  data:  new FormData(this),
+                  // dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function(data)
+                        
+                    {
+                      console.log(data);
+                      if(data=='invalid')
+                      {
+                      // invalid file format.
+                     alert("invalide image..!")
+                      }
+                      else
+                      {
+                        $('#alertArea').show();
+                        $('#alertArea').addClass("alert-success");
+                        $('#alertArea').html("Please Wait..! uploarding your image.");
+                        $("#modalpro_uploard").hide();
+                      window.setTimeout(function () {
+                        location.href = "myaccount.html"; 
+                      }, 3000);
+                      }
+                        }
+            }); //ajax
+          }));
+   
+});
+       
+ 
+function exit(){
+  navigator.app.exitApp();
+}
+function goback(){
+  window.location = "home.html";
+}
+function logout(){
+  window.localStorage.removeItem('app_uname');
+}
+function cart(){
+  $("#frmart").css("display", "block");
+  $("#cart").css("display", "none");
+}
+function discard(){
+  $("#frmart").css("display", "none");
+  $("#cart").css("display", "block");
+}
+
+function subcomment(articleId){
+  var comment = $('#comment'+articleId).val();
+  var username =localStorage.getItem('app_uname');
+  $("#lblstate"+articleId).css("display", "block");
+  if (comment) {
+  $.ajax({
+                  url: "http://"+host+"/19s07001/submit_comment.php",
+                  type: 'post',
+                  data:{username:username,comment:comment,articleId:articleId},
+                  dataType: 'JSON',
+                  crossDomain: true,
+                  cache: false,
+                    success: function(data){
+                      if (data=1){
+                        $("#lblstate"+articleId).css("display", "none");
+                        $('#comment'+articleId).val("");
+                      }
+                      console.log(data);
+                     
+                    }
+  })
+  } else {
+    alert("Please Type the comment..!")
+  }
+}
+
+function commodal(articleId){
+  $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/get_comments.php",
+                            data: {articleId:articleId},
+                            dataType: 'JSON',
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                             console.log(response);
+                                    var len = response.length;
+                                    document.getElementById("exampleModalLabel").innerHTML = "("+len+") Comments";
+                                    $('#modalinner').empty(); 
+                                    for(var i=0; i<len; i++){
+                                      var name = response[i].full_name;
+                                      var comment = response[i].comment;
+                                      var datetime = response[i].datetime;
+                                    
+                                    $( "#modalinner" ).append( 
+                                      
+                                      '<h6>'+name+'</h6>'+
+                                      '<p>'+ comment +'</p>'+
+                                      '<p class="artauthor">'+datetime+'</p>'+
+                                      '<hr>'
+                                      );
+                                     
+                                    }
+                             } 
+                    });  
+}
+
+function article(articleId){
+  $.ajax({
+                            type: "POST",
+                            url:"http://"+host+"/19s07001/get_artical.php",
+                            data: {articleId:articleId},
+                            dataType: 'JSON',
+                            crossDomain: true,
+                            cache: false,
+                            success: function(response){
+                             console.log(response);
+                                    var len = response.length;
+                                
+                                    $('#article_body').empty(); 
+                                    for(var i=0; i<len; i++){
+                                      var name = response[i].name;
+                                      var image = response[i].image;
+                                      var datetime = response[i].datetime;
+                                      var describ = response[i].describ;
+                                      var full_name = response[i].full_name;
+                                      var articleId=response[i].articleId;
+                                      document.getElementById("article_header").innerHTML =name;
+                                   
+                                      $( "#article_body" ).append( 
+                                        '<img src="http://'+host+'/19s07001/'+image+'"class="img-fluid" alt="Article Image">  <hr>'+
+                                        '<h5>'+name+ '</h5>'+
+                                        '<p>'+describ + '</p>'+
+                                        '<h6 class="artauthor">Author -'+full_name+' Date & Time'+ datetime+ '</h6>'
+                                      );
+                                     
+                                    }
+                             } 
+                    });  
+}
+
+function deleteart(articleId){
+$('#deleteinput').val(articleId);
+
+}
+
+
+function deleteconfirm(){
+   
+   var articleId = $('#deleteinput').val();
+    $.ajax({
+                              type: "POST",
+                              url:"http://"+host+"/19s07001/delete_art.php",
+                              data:{articleId:articleId},
+                              dataType: 'JSON',
+                              crossDomain: true,
+                              cache: false,
+                              success: function(response){
+                              console.log(response);
+                                if (response=1){
+                                  location.href = "myaccount.html";
+                                }
+                              } 
+                      });  
+}
+</script>
+
+</body>
+</html>
